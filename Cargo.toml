@@ -1,0 +1,7 @@
+[package]
+name = "cloudsay"
+version = "0.1.0"
+authors = ["Spaceface16518 <33424649+Spaceface16518@users.noreply.github.com>"]
+edition = "2018"
+
+[dependencies]
