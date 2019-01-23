@@ -1,0 +1,15 @@
+{
+        "name": "Cloudsay",
+        "description": "Use little things like cowsay without installing anything ",
+        "repository": "https://github.com/Spaceface16518/Cloudsay",
+        "success_url": "/",
+        "keywords": [
+                "rust",
+                "actix",
+                "cowsay"
+        ],
+        "website": "https://github.com/Spaceface16518/Cloudsay",
+        "env": {
+                "BUILDPACK_URL": "https://github.com/emk/heroku-buildpack-rust.git"
+        }
+}

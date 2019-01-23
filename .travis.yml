@@ -1,0 +1,17 @@
+language: rust
+rust:
+  - stable
+  - beta
+  - nightly
+  - 1.32.0
+  - 1.31.1
+  - 1.31.0
+before_deploy: "cargo build --verbose --release"
+deploy:
+  provider: heroku
+  api_key: $HEROKU_AUTH_TOKEN
+  app: cloudsay
+  skip_cleanup: true
+  on:
+    tags: true
+    rust: stable
