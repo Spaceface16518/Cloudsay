@@ -29,3 +29,30 @@ fn get_character<'a>(
 pub struct CharacterLookupError<'a> {
     attempt: &'a str,
 }
+
+#[cfg(test)]
+mod character_tests {
+    use super::*;
+
+    #[test]
+    fn test_get_character_positive() {
+        get_character("cow").unwrap();
+        get_character("ferris").unwrap();
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_get_character_negative() {
+        get_character("not_a_character").unwrap();
+    }
+
+    #[test]
+    fn test_get_character_input_cow() {
+        assert_eq!(get_character("cow").unwrap(), cow());
+    }
+
+    #[test]
+    fn test_get_character_input_ferris() {
+        assert_eq!(get_character("ferris").unwrap(), ferris());
+    }
+}
