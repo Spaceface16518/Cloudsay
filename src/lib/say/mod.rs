@@ -36,8 +36,6 @@ impl<'a> Output<'a> {
     pub fn write_to<W: io::Write>(self, mut out: W) -> io::Result<()> {
         let mut buffer = SmallVec::<[u8; BUF_SIZE]>::new();
 
-        let bar = repeat(DASH).take(SIDE_PADDING_TOTAL + self.width);
-
         // Add the top bar
         buffer.extend(repeat(DASH).take(SIDE_PADDING_TOTAL + self.width));
         buffer.push(NEWLINE);
