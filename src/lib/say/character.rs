@@ -1,5 +1,5 @@
 use super::statics;
-use log::error;
+use log::{error, trace};
 
 pub type Character = &'static [u8];
 
@@ -10,24 +10,23 @@ pub const fn cow() -> Character { statics::COW }
 pub const fn ferris() -> Character { statics::FERRIS }
 
 #[inline]
-fn get_character<'a>(
-    name: &'a str,
-) -> Result<Character, CharacterLookupError<'a>> {
+pub fn get_character(name: &str) -> Result<Character, CharacterLookupError> {
+    trace!("Looking up character");
     match name {
         "cow" => Ok(cow()),
         "ferris" => Ok(ferris()),
         _ => {
             error!("Character lookup failed");
             Err(CharacterLookupError {
-                attempt: name,
+                attempt: name.to_string(),
             })
         },
     }
 }
 
 #[derive(Debug, Clone)]
-pub struct CharacterLookupError<'a> {
-    attempt: &'a str,
+pub struct CharacterLookupError {
+    attempt: String,
 }
 
 #[cfg(test)]

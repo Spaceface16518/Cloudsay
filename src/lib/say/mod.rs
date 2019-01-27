@@ -1,6 +1,6 @@
 mod character;
 mod statics;
-pub use character::{Character, CharacterLookupError};
+pub use character::{get_character, Character, CharacterLookupError};
 use log::info;
 use smallvec::SmallVec;
 use statics::{
@@ -12,20 +12,17 @@ use statics::{
     SIDE_PADDING_TOTAL,
     SPACE,
 };
-use std::{fmt, io, iter::repeat};
+use std::iter::repeat;
 
-pub struct Output<'a> {
+#[derive(Debug)]
+pub struct Output {
     character: Character,
-    input: &'a [u8],
+    input: String,
     width: usize,
 }
 
-impl<'a> Output<'a> {
-    pub fn new(
-        character: Character,
-        input: &'a [u8],
-        width: usize,
-    ) -> Output<'a> {
+impl Output {
+    pub fn new(character: Character, input: String, width: usize) -> Output {
         Output {
             character,
             input,
@@ -33,14 +30,14 @@ impl<'a> Output<'a> {
         }
     }
 
-    pub fn write_to<W: io::Write>(self, mut out: W) -> io::Result<()> {
+    pub fn as_string(self) -> String {
         let mut buffer = SmallVec::<[u8; BUF_SIZE]>::new();
 
         // Add the top bar
         buffer.extend(repeat(DASH).take(SIDE_PADDING_TOTAL + self.width));
         buffer.push(NEWLINE);
 
-        self.input.split(|&c| c == b'\n').for_each(|l| {
+        self.input.lines().map(str::as_bytes).for_each(|l| {
             l.chunks(self.width).for_each(|chunk| {
                 // Add the left side bar
                 buffer.extend_from_slice(ENDSL);
@@ -64,6 +61,7 @@ impl<'a> Output<'a> {
 
         // And we're done! Write it all to output
         info!("Construction complete; writing to output");
-        out.write_all(&buffer)
+
+        String::from_utf8_lossy(buffer.as_slice()).to_string()
     }
 }

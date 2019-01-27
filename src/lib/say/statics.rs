@@ -21,9 +21,9 @@ pub const SPACE: u8 = b' ';
 
 pub const DASH: u8 = b'-';
 
-pub const ENDSR: &[u8] = b"| ";
+pub const ENDSL: &[u8] = b"| ";
 
-pub const ENDSL: &[u8] = b" |\n";
+pub const ENDSR: &[u8] = b" |\n";
 
 pub const BUF_SIZE: usize = 2048;
 
