@@ -3,12 +3,10 @@ rust:
   - stable
   - beta
   - nightly
-before_deploy: "cargo build --verbose --release"
 deploy:
   provider: heroku
   api_key: $HEROKU_AUTH_TOKEN
   app: cloudsay
-  skip_cleanup: true
   on:
     tags: true
     rust: stable
