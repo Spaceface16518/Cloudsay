@@ -21,8 +21,11 @@ fn main() {
     // Register the actix runtime
     let system = System::new("cloudsay");
 
-    // Get the desired port from an environmental variable (must be provided)
-    let port: u16 = var("PORT").expect("Could not find the $PORT environmental variable. This is a fatal error").parse().expect("$PORT must be a valid Ipv4 port");
+    // Get the desired port from an environmental variable (default is 80)
+    let port: u16 = match var("PORT") {
+        Ok(s) => s.parse().expect("Invalid $PORT provided"),
+        Err(_) => 80,
+    };
 
     // Build the http server
     HttpServer::new(|| {
