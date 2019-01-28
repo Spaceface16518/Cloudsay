@@ -3,17 +3,29 @@ use actix_web::{http::StatusCode, Query};
 use log::trace;
 use serde::Deserialize;
 
+const DEF_WIDTH: usize = 20;
+const DEF_TEXT: &str = "Hello from cloudsay!";
+
 #[derive(Deserialize, Debug)]
 pub struct SayQuery {
     character: String,
-    text: String,
-    width: usize,
+    text: Option<String>,
+    width: Option<usize>,
 }
 
 impl SayQuery {
     pub fn get_output(&self) -> Result<Output, CharacterLookupError> {
         match get_character(&self.character) {
-            Ok(c) => Ok(Output::new(c, self.text.clone(), self.width)),
+            Ok(c) => {
+                Ok(Output::new(
+                    c,
+                    match &self.text {
+                        Some(t) => t.clone(),
+                        None => DEF_TEXT.to_string(),
+                    },
+                    self.width.unwrap_or(DEF_WIDTH),
+                ))
+            },
             Err(e) => Err(e),
         }
     }
