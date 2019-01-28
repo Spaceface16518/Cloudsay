@@ -57,7 +57,12 @@ impl Output {
         buffer.extend(repeat(DASH).take(SIDE_PADDING_TOTAL + self.width));
 
         // Add the character itself
-        buffer.extend_from_slice(self.character);
+        let offset = (SIDE_PADDING_TOTAL + self.width) / 2;
+        self.character.split(|&b| b == b'\n').for_each(|l| {
+            buffer.extend(repeat(SPACE).take(offset));
+            buffer.extend_from_slice(l);
+            buffer.push(b'\n');
+        });
 
         // And we're done! Write it all to output
         info!("Construction complete; writing to output");

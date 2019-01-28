@@ -12,7 +12,6 @@ pub struct SayQuery {
 
 impl SayQuery {
     pub fn get_output(&self) -> Result<Output, CharacterLookupError> {
-        // let lookup = self.character.clone();
         match get_character(&self.character) {
             Ok(c) => Ok(Output::new(c, self.text.clone(), self.width)),
             Err(e) => Err(e),
