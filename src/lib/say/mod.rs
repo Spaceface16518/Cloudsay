@@ -14,7 +14,7 @@ use statics::{
 };
 use std::iter::repeat;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Output {
     character: Character,
     input: String,
@@ -56,6 +56,9 @@ impl Output {
         // Add the bottom bar to the speech bubble
         buffer.extend(repeat(DASH).take(SIDE_PADDING_TOTAL + self.width));
 
+        buffer.push(b'\n');
+
+        // BUG: this is adding an extra set of spaces and a newline, for some reason
         // Add the character itself
         let offset = (SIDE_PADDING_TOTAL + self.width) / 2;
         self.character.split(|&b| b == b'\n').for_each(|l| {
@@ -68,5 +71,45 @@ impl Output {
         info!("Construction complete; writing to output");
 
         String::from_utf8_lossy(buffer.as_slice()).to_string()
+    }
+}
+
+#[cfg(test)]
+mod say_tests {
+    use super::*;
+
+    #[test]
+    fn test_new() {
+        let actual = Output::new(statics::COW, "test".to_string(), 20);
+        assert_eq!(actual, Output {
+            character: statics::COW,
+            input: "test".to_string(),
+            width: 20
+        })
+    }
+
+    // TODO: add some actual tests for Output::as_string
+
+    #[test]
+    fn test_as_string_cow_default() {
+        let output = Output {
+            character: statics::COW,
+            input: "Hello from cloudsay!".to_string(),
+            width: 20
+        };
+
+        // For now, just print to stdout. Will add actual tests later
+        println!("{}", output.as_string())
+    }
+
+    #[test]
+    fn test_as_string_ferris_default() {
+        let output = Output {
+            character: statics::FERRIS,
+            input: "Hello from cloudsay!".to_string(),
+            width: 20
+        };
+
+        println!("{}", output.as_string())
     }
 }

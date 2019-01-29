@@ -1,19 +1,17 @@
-pub const COW: &'static [u8] = br#"
-\   ^__^
+pub const COW: &'static [u8] = 
+br#"\   ^__^
  \  (oo)\_______
     (__)\       )\/\
         ||----w |
-        ||     ||
-"#;
+        ||     ||"#;
 
-pub const FERRIS: &'static [u8] = br#"
-\
+pub const FERRIS: &'static [u8] =
+br#"\
  \
     _~^~^~_
 \) /  o o  \ (/
   '_   -   _'
-  / '-----' \
-"#;
+  / '-----' \"#;
 
 pub const NEWLINE: u8 = b'\n';
 
