@@ -15,16 +15,16 @@ use std::{
 mod lib;
 
 fn main() {
-    std::env::set_var("RUST_LOG", "actix_web=info");
     pretty_env_logger::init();
 
     // Register the actix runtime
     let system = System::new("cloudsay");
 
     // Get the desired port from an environmental variable (default is 80)
-    let port: u16 = match var("PORT") {
-        Ok(s) => s.parse().expect("Invalid $PORT provided"),
-        Err(_) => 80,
+    let port: u16 = if let Ok(p) = var("PORT") {
+        p.parse().expect("Could not parse $PORT")
+    } else {
+        80
     };
 
     // Build the http server
