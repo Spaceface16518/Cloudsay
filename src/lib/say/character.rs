@@ -16,22 +16,9 @@ lazy_static! {
 
 #[inline]
 pub fn get_character(name: &str) -> Result<Character, CharacterLookupError> {
-    trace!("Looking up character");
-    // match name {
-    //     "cow" => Ok(cow()),
-    //     "ferris" => Ok(ferris()),
-    //     _ => {
-    //         error!("Character lookup failed");
-    //         Err(CharacterLookupError {
-    //             attempt: name.to_string(),
-    //         })
-    //     },
-    // }
-
     if let Some(&c) = CHAR_TABLE.get(name) {
         Ok(c)
     } else {
-        error!("Character lookup failed");
         Err(CharacterLookupError {
             attempt: name.to_string(),
         })

@@ -68,8 +68,6 @@ impl Output {
         });
 
         // And we're done! Write it all to output
-        info!("Construction complete; writing to output");
-
         String::from_utf8_lossy(buffer.as_slice()).to_string()
     }
 }

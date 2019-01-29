@@ -1,6 +1,6 @@
 [package]
 name = "cloudsay"
-version = "0.2.6"
+version = "0.2.7"
 authors = ["Spaceface16518 <33424649+Spaceface16518@users.noreply.github.com>"]
 edition = "2018"
 

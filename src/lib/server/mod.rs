@@ -32,7 +32,6 @@ impl SayQuery {
 }
 
 pub fn handler(params: Query<SayQuery>) -> String {
-    trace!("Request recieved");
     match params.get_output() {
         Ok(output_struct) => output_struct.as_string(),
         Err(_) => StatusCode::NOT_FOUND.to_string(),
