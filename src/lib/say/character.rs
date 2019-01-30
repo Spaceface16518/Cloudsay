@@ -1,12 +1,11 @@
 use super::statics;
 use hashbrown::HashMap;
 use lazy_static::lazy_static;
-use log::{error, trace};
 
-pub type Character = &'static [u8];
+pub type Character = &'static str;
 
 lazy_static! {
-    static ref CHAR_TABLE: HashMap<&'static str, &'static [u8]> = {
+    static ref CHAR_TABLE: HashMap<&'static str, &'static str> = {
         let mut tmp = HashMap::with_capacity(2);
         tmp.insert("cow", statics::COW);
         tmp.insert("ferris", statics::FERRIS);

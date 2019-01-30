@@ -1,11 +1,10 @@
 [package]
 name = "cloudsay"
-version = "0.2.7"
+version = "0.2.8"
 authors = ["Spaceface16518 <33424649+Spaceface16518@users.noreply.github.com>"]
 edition = "2018"
 
 [dependencies]
-log = "0.4"
 pretty_env_logger = "0.3"
 smallvec = "0.6"
 actix-web = "0.7"

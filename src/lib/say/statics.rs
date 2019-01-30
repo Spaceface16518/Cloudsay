@@ -1,27 +1,25 @@
-pub const COW: &'static [u8] = 
-br#"\   ^__^
+pub const COW: &'static str = r#"\   ^__^
  \  (oo)\_______
     (__)\       )\/\
         ||----w |
         ||     ||"#;
 
-pub const FERRIS: &'static [u8] =
-br#"\
+pub const FERRIS: &'static str = r#"\
  \
     _~^~^~_
 \) /  o o  \ (/
   '_   -   _'
   / '-----' \"#;
 
-pub const NEWLINE: u8 = b'\n';
+pub const NEWLINE: char = '\n';
 
-pub const SPACE: u8 = b' ';
+pub const SPACE: char = ' ';
 
-pub const DASH: u8 = b'-';
+pub const DASH: char = '-';
 
-pub const ENDSL: &[u8] = b"| ";
+pub const ENDSL: &str = "| ";
 
-pub const ENDSR: &[u8] = b" |\n";
+pub const ENDSR: &str = " |\n";
 
 pub const BUF_SIZE: usize = 2048;
 

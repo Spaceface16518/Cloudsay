@@ -1,6 +1,5 @@
 use crate::lib::say::{get_character, CharacterLookupError, Output};
 use actix_web::{http::StatusCode, Query};
-use log::trace;
 use serde::Deserialize;
 
 const DEF_WIDTH: usize = 20;
@@ -47,14 +46,21 @@ mod say_query_tests {
         let ser = SayQuery {
             character: "cow".to_string(),
             text: None,
-            width: None
+            width: None,
         };
 
-        assert_eq!(ser.get_output().unwrap(), Output::new(br#"\   ^__^
+        assert_eq!(
+            ser.get_output().unwrap(),
+            Output::new(
+                r#"\   ^__^
  \  (oo)\_______
     (__)\       )\/\
         ||----w |
-        ||     ||"#, "Hello from cloudsay!".to_string(), 20))
+        ||     ||"#,
+                "Hello from cloudsay!".to_string(),
+                20
+            )
+        )
     }
 
     #[test]
@@ -62,15 +68,22 @@ mod say_query_tests {
         let ser = SayQuery {
             character: "ferris".to_string(),
             text: None,
-            width: None
+            width: None,
         };
 
-        assert_eq!(ser.get_output().unwrap(), Output::new(br#"\
+        assert_eq!(
+            ser.get_output().unwrap(),
+            Output::new(
+                r#"\
  \
     _~^~^~_
 \) /  o o  \ (/
   '_   -   _'
-  / '-----' \"#, "Hello from cloudsay!".to_string(), 20))
+  / '-----' \"#,
+                "Hello from cloudsay!".to_string(),
+                20
+            )
+        )
     }
 
     #[test]
@@ -78,14 +91,21 @@ mod say_query_tests {
         let ser = SayQuery {
             character: "cow".to_string(),
             text: Some("Custom text".to_string()),
-            width: Some(10)
+            width: Some(10),
         };
 
-        assert_eq!(ser.get_output().unwrap(), Output::new(br#"\   ^__^
+        assert_eq!(
+            ser.get_output().unwrap(),
+            Output::new(
+                r#"\   ^__^
  \  (oo)\_______
     (__)\       )\/\
         ||----w |
-        ||     ||"#, "Custom text".to_string(), 10))
+        ||     ||"#,
+                "Custom text".to_string(),
+                10
+            )
+        )
     }
 
     #[test]
@@ -93,14 +113,21 @@ mod say_query_tests {
         let ser = SayQuery {
             character: "ferris".to_string(),
             text: Some("Custom text".to_string()),
-            width: Some(10)
+            width: Some(10),
         };
 
-        assert_eq!(ser.get_output().unwrap(), Output::new(br#"\
+        assert_eq!(
+            ser.get_output().unwrap(),
+            Output::new(
+                r#"\
  \
     _~^~^~_
 \) /  o o  \ (/
   '_   -   _'
-  / '-----' \"#, "Custom text".to_string(), 10))
+  / '-----' \"#,
+                "Custom text".to_string(),
+                10
+            )
+        )
     }
 }
