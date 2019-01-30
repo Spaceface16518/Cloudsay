@@ -1,8 +1,10 @@
 use crate::lib::say::{get_character, CharacterLookupError, Output};
 use actix_web::{http::StatusCode, Query};
 use serde::Deserialize;
+use std::cmp::max;
 
 const DEF_WIDTH: usize = 20;
+const MIN_WIDTH: usize = 1;
 const DEF_TEXT: &str = "Hello from cloudsay!";
 
 #[derive(Deserialize, Debug)]
@@ -22,7 +24,7 @@ impl SayQuery {
                         Some(t) => t.clone(),
                         None => DEF_TEXT.to_string(),
                     },
-                    self.width.unwrap_or(DEF_WIDTH),
+                    max(MIN_WIDTH, self.width.unwrap_or(DEF_WIDTH)),
                 ))
             },
             Err(e) => Err(e),
