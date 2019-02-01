@@ -11,10 +11,7 @@ use statics::{
     SIDE_PADDING_TOTAL,
     SPACE,
 };
-use std::{
-    iter::{repeat, FromIterator},
-    str::from_utf8_unchecked as str_from_utf8_unchecked,
-};
+use std::iter::{once, repeat, FromIterator};
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Output {
@@ -39,21 +36,47 @@ impl Output {
         buffer.extend(repeat(DASH).take(SIDE_PADDING_TOTAL + self.width));
         buffer.push(NEWLINE);
 
-        self.input.lines().map(str::as_bytes).for_each(|l| {
-            l.chunks(self.width).for_each(|chunk| {
-                // Add the left side bar
-                buffer.extend(ENDSL.chars());
+        let mut last_idx = 0;
+        let chunks = {
+            self.input
+                .char_indices()
+                .step_by(self.width)
+                .map(Some) // hack to get last slice
+                .chain(once(None))
+                .filter_map(|next_idx| {
+                    match next_idx {
+                        Some(next_idx) => {
+                            let slice = self.input.get(last_idx..next_idx.0);
+                            last_idx = next_idx.0;
+                            Some(slice)
+                        },
+                        None => {
+                            // grab last nonconforming slice
+                            if last_idx != self.input.len() {
+                                Some(self.input.get(last_idx..))
+                            } else {
+                                None
+                            }
+                        },
+                    }
+                })
+        };
+        chunks.for_each(|chunk| {
+            let chunk = chunk.unwrap();
+            // Add the left side bar
+            buffer.extend(ENDSL.chars());
 
-                // Add the actual text line
-                let line = unsafe { str_from_utf8_unchecked(chunk) };
-                buffer.extend(line.chars());
+            // Add the actual text line
+            buffer.extend(chunk.chars());
 
-                // Add the extra spaces
-                buffer.extend(repeat(SPACE).take(self.width - chunk.len()));
+            // Add the extra spaces
+            buffer.extend(
+                repeat(SPACE)
+                    .take(self.width.checked_sub(chunk.len()).unwrap_or(0)),
+            );
 
-                // Close with the right side bar (and a newline)
-                buffer.extend(ENDSR.chars());
-            })
+            // Close with the right side bar (and a newline)
+            buffer.extend(ENDSR.chars());
         });
 
         // Add the bottom bar to the speech bubble
