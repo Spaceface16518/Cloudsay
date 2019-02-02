@@ -37,47 +37,46 @@ impl Output {
         buffer.push(NEWLINE);
 
         let mut last_idx = 0;
-        let chunks = {
-            self.input
-                .char_indices()
-                .step_by(self.width)
-                .map(Some) // hack to get last slice
-                .chain(once(None))
-                .filter_map(|next_idx| {
-                    match next_idx {
-                        Some(next_idx) => {
-                            let slice = self.input.get(last_idx..next_idx.0);
-                            last_idx = next_idx.0;
-                            Some(slice)
-                        },
-                        None => {
-                            // grab last nonconforming slice
-                            if last_idx != self.input.len() {
-                                Some(self.input.get(last_idx..))
-                            } else {
-                                None
-                            }
-                        },
-                    }
-                })
-        };
-        chunks.for_each(|chunk| {
-            let chunk = chunk.unwrap();
-            // Add the left side bar
-            buffer.extend(ENDSL.chars());
+        self.input
+            .char_indices()
+            .step_by(self.width)
+            .map(Some) // hack to get last slice
+            .chain(once(None))
+            .skip(1)
+            .filter_map(|next_idx| {
+                match next_idx {
+                    Some(next_idx) => {
+                        let slice = self.input.get(last_idx..next_idx.0);
+                        last_idx = next_idx.0;
+                        Some(slice)
+                    },
+                    None => {
+                        // grab last nonconforming slice
+                        if last_idx != self.input.len() {
+                            Some(self.input.get(last_idx..))
+                        } else {
+                            None
+                        }
+                    },
+                }
+            })
+            .for_each(|chunk| {
+                let chunk = chunk.unwrap();
+                // Add the left side bar
+                buffer.extend(ENDSL.chars());
 
-            // Add the actual text line
-            buffer.extend(chunk.chars());
+                // Add the actual text line
+                buffer.extend(chunk.chars());
 
-            // Add the extra spaces
-            buffer.extend(
-                repeat(SPACE)
-                    .take(self.width.checked_sub(chunk.len()).unwrap_or(0)),
-            );
+                // Add the extra spaces
+                buffer
+                    .extend(repeat(SPACE).take(
+                        self.width.checked_sub(chunk.len()).unwrap_or(0),
+                    ));
 
-            // Close with the right side bar (and a newline)
-            buffer.extend(ENDSR.chars());
-        });
+                // Close with the right side bar (and a newline)
+                buffer.extend(ENDSR.chars());
+            });
 
         // Add the bottom bar to the speech bubble
         buffer.extend(repeat(DASH).take(SIDE_PADDING_TOTAL + self.width));
